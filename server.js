@@ -59,7 +59,10 @@ app.post("/messages", urlencodedParser, function (request, response) {
 app.delete("/messages/:id", function (request, response) {
   let message = messages.find((msg) => msg.id === parseInt(request.params.id));
   if (message) {
-    response.json(message);
+    response.json({
+      msg: "Message deleted",
+      messages: messages.filter(({ id }) => id !== parseInt(request.params.id)),
+    });
   } else {
     response
       .status(400)
