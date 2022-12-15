@@ -1,9 +1,11 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const uuid = require("uuid");
 const bodyParser = require("body-parser");
 
 const app = express();
+const PORT = process.env.PORT || 3005;
 
 app.use(cors());
 
@@ -21,9 +23,8 @@ const welcomeMessage = {
 //Note: messages will be lost when Glitch restarts our server.
 const messages = [welcomeMessage];
 
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + "/index.html");
-});
+// Static file
+app.use(express.static(path.join(__dirname, "public")));
 
 // Get all messages
 app.get("/messages", function (request, response) {
@@ -66,5 +67,4 @@ app.delete("/messages/:id", function (request, response) {
   }
 });
 
-app.listen(process.env.PORT);
-
+app.listen(PORT, () => console.log(`Listening on port : ${PORT}`));
