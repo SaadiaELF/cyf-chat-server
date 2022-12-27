@@ -28,14 +28,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Get all messages
 app.get("/messages", function (request, response) {
-  response.send(messages);
+  response.status(200).json(messages);
 });
 
 // Get one message by id
 app.get("/messages/:id", function (request, response) {
-  let message = messages.find((msg) => msg.id === parseInt(request.params.id));
+  let message = messages.find((msg) => msg.id == request.params.id);
   if (message) {
-    response.json(message);
+    response.status(200).json(message);
   } else {
     response
       .status(400)
@@ -57,11 +57,11 @@ app.post("/messages", urlencodedParser, function (request, response) {
 
 // Delete one message by id
 app.delete("/messages/:id", function (request, response) {
-  let message = messages.find((msg) => msg.id === parseInt(request.params.id));
+  let message = messages.find((msg) => msg.id == request.params.id);
   if (message) {
-    response.json({
+    response.status(200).json({
       msg: "Message deleted",
-      messages: messages.filter(({ id }) => id !== parseInt(request.params.id)),
+      messages: messages.filter(({ id }) => id != request.params.id),
     });
   } else {
     response
